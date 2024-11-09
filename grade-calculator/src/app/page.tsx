@@ -1,7 +1,25 @@
 import Image from "next/image";
-import styles from "./page.module.css";
+//import styles from "./page.module.css";
+import NavBar from "../app/components/NavBar";
+
+export interface NavTitle {
+  title: string;
+}
+
+const title: NavTitle = {
+  title: "Grade Calculator",
+};
 
 export default function Home() {
+  return (
+    <div>
+      <NavBar title={title} />
+      <br></br>
+    </div>
+  );
+}
+
+/*export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -93,3 +111,5 @@ export default function Home() {
     </div>
   );
 }
+
+*/

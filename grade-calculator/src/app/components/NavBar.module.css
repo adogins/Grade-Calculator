@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
+
+.nav {
+    background-color: #ba0c2f;
+    color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    box-shadow: 0px 4px 4px #00000052;
+    justify-content: flex-start;
+    /*padding-bottom: 5px; */
+}
+.nav p {
+    padding-left:34%;
+    padding-top: 1rem;
+    font-family: "Jomhuria", serif;
+    font-weight: 550;
+    font-style: normal;
+    font-size: 60px;
+    outline-color: #000000;
+    outline-width: 1.5px;
+    text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+}
+
+.nav p.outline-text {
+    outline-color: #000000;
+    outline-width: 1.5px;
+}
+.jomhuria-regular {
+    font-family: "Jomhuria", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
