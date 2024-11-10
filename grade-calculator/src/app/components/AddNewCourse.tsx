@@ -1,12 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import Button from './NewCourseButton';
-import style from "./NewCourse.module.css";
+import style from "./AddNewCourse.module.css";
 
 type NewClassProps = {
-    onAddCourse: ()
+    // onAddCourse: ()
 }
 
-export default function NewClass({onAddCourse}) {
+export default function AddNewCourse(/**{onAddCourse}*/) {
+    
+    /**
     const [courseName, setCourseName] = useState('');
     const [courseNumber, setCourseNumber] = useState('');
     const [professor, setProfessor] = useState('');
@@ -62,8 +64,49 @@ export default function NewClass({onAddCourse}) {
         setWeight('');
         setGrade('');
     };
+    */
 
     return (
+
+        <section className={style.bg}>
+            <h1>Add New Course</h1>
+            <div>
+                <div className={style.AddNewCourse}>
+                    <h2>Course Name:</h2> 
+                    <input type="text"/>
+                </div>
+                <div className={style.AddNewCourse}>
+                    <h2>Course Number:</h2>
+                    <input type="text"/>
+                </div>
+                <div className={style.AddNewCourse}>
+                    <h2>Professor:</h2>
+                    <input type="text"/>
+                </div>
+                <div className={style.AddNewCourse}>
+                    <h2>Link to Syllabus:</h2>
+                    <input type="text"/>
+                </div>
+            
+            </div>
+            <h1>Grades</h1>
+            <div className={style.grid}>
+                <div className={style.gridItem}>Assignment Title</div>
+                <div className={style.gridItem}>Weight</div>
+                <div className={style.gridItem}>Grade</div>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+                <input className={style.gridItem} type="text"/>
+            </div>
+         </section>
+
+        /*
         <form onSubmit={submitHandler}>
             <label htmlFor="courseName">Course Name</label>
             <input
@@ -123,6 +166,7 @@ export default function NewClass({onAddCourse}) {
             />
             <Button type="submit">Add Course</Button>
         </form>
+        */
         
     );
 }
