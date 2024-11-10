@@ -1,6 +1,7 @@
 import Image from "next/image";
 //import styles from "./page.module.css";
 import NavBar from "../app/components/NavBar";
+import Login from "./components/Login";
 
 export interface NavTitle {
   title: string;
@@ -15,6 +16,7 @@ export default function Home() {
     <div>
       <NavBar title={title} />
       <br></br>
+      <Login />
     </div>
   );
 }
