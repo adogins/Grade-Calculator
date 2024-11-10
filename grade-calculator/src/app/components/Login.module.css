@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
 
-
 .bg {
     background-color: #5a5a5aed;
     display: flex;
@@ -28,8 +27,7 @@
     font-style: normal;
     font-size: 7rem;
     padding-top: 2.5rem;
-    text-shadow: 5px 12px 4px#0000007c;
-    
+    text-shadow: 5px 12px 4px#0000007c; 
 }
 
 .bg2 {
@@ -41,7 +39,6 @@
     margin-top: 4rem;
     margin-left: 7rem;
     margin-right: 7rem;
-    /*padding-left: 14rem;*/
     padding-bottom: 4rem;
     padding-top: 3rem;
     padding-right: 2rem;
