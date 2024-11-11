@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import NewCourseButton from "../components/NewCourseButton";
 import HomeButton from "../components/HomeButton";
 import LogoutButton from "../components/LogoutButton";
+import EditButton from "../components/EditButton";
+import DeleteButton from "../components/DeleteButton";
 
 
 export interface NavTitle {
@@ -31,11 +33,15 @@ export default function CourseViewPage() {
         <div>
             <NavBar title={title} />
             <br></br>
-            <NewCourseButton type="button" onClick={handleNewCourseClick}>Add a Course</NewCourseButton>
+            <NewCourseButton type="button" onClick={handleNewCourseClick}>Add a New Course</NewCourseButton>
             <br></br>
             <HomeButton type="button" onClick={handleHomeClick}>Back to Login</HomeButton>
             <br></br>
             <LogoutButton type="button" onClick={handleHomeClick}>Logout</LogoutButton>
+            <br></br>
+            <EditButton type="button" onClick={handleHomeClick}>Edit</EditButton>
+            <br></br>
+            <DeleteButton type="button" onClick={handleHomeClick}>Delete</DeleteButton>
 
         </div>
     )

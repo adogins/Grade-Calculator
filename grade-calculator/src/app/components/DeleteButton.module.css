@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
 
-.newCourse {
+.delete {
     position: absolute;
-    bottom: 40px;
-    left: 20px;
+    top: 400px;
+    right: 100px;
     padding-top: 0.05rem;
     padding-bottom: 0.5rem; 
     padding-left: 1.4rem;
@@ -13,9 +13,9 @@
     font-family: "Jomhuria", serif;
     font-weight: 550;
     font-style: normal;
-    font-size: 1.7rem;
-    color: #ffffff; 
-    background-color: #ba0c2f; 
+    font-size: 3rem;
+    color: #000000; 
+    background-color: #ffffff; 
     border-color: #000000;
     width: 11rem;
     height: 2.7rem;
