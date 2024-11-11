@@ -19,6 +19,8 @@ export interface NavTitle {
 export default function CourseViewPage() {
     const routerNC = useRouter();
     const routerHome = useRouter();
+    const routerEditCourse = useRouter();
+    const routerDeleteCourse = useRouter();
 
     const handleNewCourseClick = () => {
         routerNC.push('/NewCourse');
@@ -26,6 +28,14 @@ export default function CourseViewPage() {
 
     const handleHomeClick = () => {
         routerHome.push('/');
+    };
+
+    const handleEditCourseClick = () => {
+        routerEditCourse.push('/CourseView');
+    };
+
+    const handleDeleteCourseClick = () => {
+        routerDeleteCourse.push('/CourseView');
     };
 
 
@@ -39,9 +49,9 @@ export default function CourseViewPage() {
             <br></br>
             <LogoutButton type="button" onClick={handleHomeClick}>Logout</LogoutButton>
             <br></br>
-            <EditButton type="button" onClick={handleHomeClick}>Edit</EditButton>
+            <EditButton type="button" onClick={handleEditCourseClick}>Edit</EditButton>
             <br></br>
-            <DeleteButton type="button" onClick={handleHomeClick}>Delete</DeleteButton>
+            <DeleteButton type="button" onClick={handleDeleteCourseClick}>Delete</DeleteButton>
 
         </div>
     )
