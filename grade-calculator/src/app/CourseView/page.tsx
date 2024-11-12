@@ -6,7 +6,60 @@ import HomeButton from "../components/HomeButton";
 import LogoutButton from "../components/LogoutButton";
 import EditButton from "../components/EditButton";
 import DeleteButton from "../components/DeleteButton";
+import Courses from "../components/Courses";
+import React, { useState } from 'react';
 
+
+
+
+type Assignment = {
+    name: string;
+    weight: string;
+    grade: string;
+  };
+  type Course = {
+    courseName: string;
+    courseNumber: string;
+    professor: string;
+    syllabus: string;
+    assignments: Assignment[];
+  };
+   const initial: Course[] = [
+    {
+      courseName: "Intro to Prog",
+      courseNumber: "CS1301",
+      professor: "Dr.Liang",
+      syllabus: "https://computing.uga.edu/courses/content/csci-1301-1301l",
+      assignments: [
+        { name: "Project 1", weight: "20", grade: "85" },
+        { name: "Project 2", weight: "30", grade: "90" },
+        { name: "Project 3", weight: "50", grade: "88" }
+      ]
+    },
+    {
+        courseName: "Comp Networks",
+        courseNumber: "CS300",
+        professor: "Dr. Smith",
+        syllabus: "https://computing.uga.edu/courses/content/csci-1302",
+        assignments: [
+          { name: "Project 1", weight: "20", grade: "80" },
+          { name: "Project 2", weight: "30", grade: "75" },
+          { name: "Project 3", weight: "50", grade: "85" }
+        ]
+      },
+      {
+        courseName: "Systems Prog",
+        courseNumber: "CS1730",
+        professor: "Sal Lamarca",
+        syllabus: "https://computing.uga.edu/courses/content/csci-1730",
+        assignments: [
+          { name: "Project 1", weight: "20", grade: "95" },
+          { name: "Project 2", weight: "30", grade: "90" },
+          { name: "Project 3", weight: "50", grade: "92" }
+        ]
+      }
+    ];
+   
 
 export interface NavTitle {
     title: string;
@@ -17,6 +70,9 @@ export interface NavTitle {
   };
 
 export default function CourseViewPage() {
+    const [courses, setCourses] = useState<Course[]>(initial);
+
+
     const routerNC = useRouter();
     const routerHome = useRouter();
     const routerEditCourse = useRouter();
@@ -39,22 +95,21 @@ export default function CourseViewPage() {
     };
 
 
-    return (
-        <div>
-            <NavBar title={title} />
-            <br></br>
+
+
+   return (
+    <div>
+        <NavBar title={title} />
+        <br />
+        <Courses courses={courses} />
+      
+        <LogoutButton type="button" onClick={handleHomeClick}>Logout</LogoutButton>
+
+        <br></br>
             <NewCourseButton type="button" onClick={handleNewCourseClick}>Add a New Course</NewCourseButton>
             <br></br>
-            <HomeButton type="button" onClick={handleHomeClick}>Back to Login</HomeButton>
-            <br></br>
-            <LogoutButton type="button" onClick={handleHomeClick}>Logout</LogoutButton>
-            <br></br>
-            <EditButton type="button" onClick={handleEditCourseClick}>Edit</EditButton>
-            <br></br>
-            <DeleteButton type="button" onClick={handleDeleteCourseClick}>Delete</DeleteButton>
-
-        </div>
-    )
+    </div>
+);
 }
 
 
