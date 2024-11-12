@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 .page {
     --gray-rgb: 0, 0, 0;
     --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -108,7 +112,7 @@
     flex-shrink: 0;
   }
   
-  /* Enable hover only on non-touch devices */
+   /*Enable hover only on non-touch devices */
   @media (hover: hover) and (pointer: fine) {
     a.primary:hover {
       background: var(--button-primary-hover);
@@ -166,4 +170,3 @@
       filter: invert();
     }
   }
-  
