@@ -252,71 +252,12 @@ export default function AddNewCourse() {
                         />
                     </div>
 
-                    <SubmitNewCourseButton type="button" onClick={submitHandler}>Submit</SubmitNewCourseButton>
+                    <div className={style.submitButton}>
+                        <SubmitNewCourseButton type="button" onClick={submitHandler}>Submit</SubmitNewCourseButton>
+                    </div>
                 </form>
             </section>
             
         </div>
     );
 }
-
-            /*<form onSubmit={submitHandler}>
-                <label htmlFor="courseName">Course Name</label>
-                <input
-                    id="courseName"
-                    type="text"
-                    placeholder="Name of your course"
-                    value={courseName}
-                    onChange={courseNameChangeHandler}
-                />
-                <label htmlFor="courseNumber">Course Number</label>
-                <input
-                    id="courseNumber"
-                    type="text"
-                    placeholder="ID Number of your course"
-                    value={courseNumber}
-                    onChange={courseNumberChangeHandler}
-                />
-                <label htmlFor="professor">Professor</label>
-                <input
-                    id="professor"
-                    type="text"
-                    placeholder="Name of your professor"
-                    value={professor}
-                    onChange={professorChangeHandler}
-                />
-                <label htmlFor="syllabus">Syllabus</label>
-                <input
-                    id="syllabus"
-                    type="url"
-                    placeholder="Link to your syllabus"
-                    value={syllabus}
-                    onChange={syllabusChangeHandler}
-                />
-
-                <label htmlFor="assignment">Assignment</label>
-                <input
-                    id="assignment"
-                    type="text"
-                    placeholder="Title of your assignment"
-                    value={assignment}
-                    onChange={assignmentChangeHandler}
-                />
-                <label htmlFor="weight">Weight</label>
-                <input
-                    id="weight"
-                    type="text"
-                    placeholder="Weight of your grade (%)"
-                    value={weight}
-                    onChange={weightChangeHandler}
-                />
-                <label htmlFor="grade">Grade</label>
-                <input
-                    id="grade"
-                    type="text"
-                    placeholder="Grade you received (%)"
-                    value={grade}
-                    onChange={gradeChangeHandler}
-                />
-                <Button type="submit">Add Course</Button>
-            </form>*/
