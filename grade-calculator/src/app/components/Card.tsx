@@ -2,11 +2,6 @@ import React from 'react';
 import style from './Card.module.css';
 
 
-type Assignment = {
-   name: string;
-   weight: string;
-   grade: string;
- };
 
 
 type CardProps = {
@@ -14,7 +9,7 @@ type CardProps = {
  courseNumber: string;
  professor: string;
  syllabus: string;
- assignments: Assignment[];
+ finalGrade:string;
 
 
 };
@@ -25,8 +20,10 @@ const Card = ({
    courseNumber,
    professor,
    syllabus,
-   assignments,
+   finalGrade,
  }: CardProps) => {
+
+  
    return (
        <div className={style.cardContainer}>
 
@@ -53,7 +50,7 @@ const Card = ({
 
 
        <p className={style.finalGrade}>FINAL GRADE</p>
-
+       <h1 className={style.finalGradenum}>{finalGrade}%</h1>
 
 
        <div className={style.footer}>

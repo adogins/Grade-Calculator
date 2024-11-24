@@ -22,7 +22,7 @@ type Assignment = {
     courseNumber: string;
     professor: string;
     syllabus: string;
-    assignments: Assignment[];
+    finalGrade: string;
   };
    const initial: Course[] = [
     {
@@ -30,33 +30,22 @@ type Assignment = {
       courseNumber: "CS1301",
       professor: "Dr.Liang",
       syllabus: "https://computing.uga.edu/courses/content/csci-1301-1301l",
-      assignments: [
-        { name: "Project 1", weight: "20", grade: "85" },
-        { name: "Project 2", weight: "30", grade: "90" },
-        { name: "Project 3", weight: "50", grade: "88" }
-      ]
+      finalGrade: "89",
+      
     },
     {
         courseName: "Comp Networks",
         courseNumber: "CS300",
         professor: "Dr. Smith",
         syllabus: "https://computing.uga.edu/courses/content/csci-1302",
-        assignments: [
-          { name: "Project 1", weight: "20", grade: "80" },
-          { name: "Project 2", weight: "30", grade: "75" },
-          { name: "Project 3", weight: "50", grade: "85" }
-        ]
+        finalGrade: "74",
       },
       {
         courseName: "Systems Prog",
         courseNumber: "CS1730",
         professor: "Sal Lamarca",
         syllabus: "https://computing.uga.edu/courses/content/csci-1730",
-        assignments: [
-          { name: "Project 1", weight: "20", grade: "95" },
-          { name: "Project 2", weight: "30", grade: "90" },
-          { name: "Project 3", weight: "50", grade: "92" }
-        ]
+        finalGrade: "84",
       }
     ];
    

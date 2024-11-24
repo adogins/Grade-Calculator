@@ -7,16 +7,13 @@ type Course = {
    courseNumber: string;
    professor: string;
    syllabus: string;
-   assignments: Assignment[];
+   finalGrade: string;
+  
  };
  type CoursesProps = {
    courses: Course[];
  };
-type Assignment = {
-   name: string;
-   weight: string;
-   grade: string;
- };
+ 
  
  const Courses = ({ courses }: CoursesProps) => {
    return (
@@ -28,7 +25,7 @@ type Assignment = {
        courseNumber={course.courseNumber}
        professor={course.professor}
        syllabus={course.syllabus}
-       assignments={course.assignments}
+       finalGrade={course.finalGrade}
          />
        ))}
      </div>
