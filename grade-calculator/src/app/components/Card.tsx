@@ -52,8 +52,26 @@ const Card = ({
 
 
 
+       <p className={style.finalGrade}>FINAL GRADE</p>
 
-<div className={style.assignmentList}>
+
+
+       <div className={style.footer}>
+       <div className={style.buttonContainer}>
+       <button className={style.editButton} >Edit</button>
+       
+       <button className={style.deleteButton} >Delete</button>
+      
+           </div>
+       </div>
+     </div>
+   </div>
+ );
+};
+   export default Card;
+
+/*
+   <div className={style.assignmentList}>
      
        <div className={style.assignmentHeader}>
        <h4 className={style.header}>Assignment</h4>
@@ -71,18 +89,4 @@ const Card = ({
            </div>
          ))}
        </div>
-
-
-       <div className={style.footer}>
-       <div className={style.buttonContainer}>
-       <button className={style.editButton} >Edit</button>
-       <p className={style.finalGrade}>FINAL GRADE</p>
-       <button className={style.deleteButton} >Delete</button>
-      
-           </div>
-       </div>
-     </div>
-   </div>
- );
-};
-   export default Card;
+       */
