@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { use } from "react";
 import style from "./Login.module.css";
 import Image from "next/image";
@@ -9,11 +9,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-
   const router = useRouter();
 
   const handleLoginClick = () => {
-    router.push('/CourseView');
+    router.push("/CourseView");
   };
 
   return (
@@ -59,12 +58,14 @@ const Login = () => {
             <Link id={style.forgot} href={"/"}>
               Forgot Password?
             </Link>
-            <Link id={style.account} href={"/"}>
+            <Link id={style.account} href={"/Signup"}>
               Create Account
             </Link>
           </div>
           <div className={style.btn}>
-            <Button type="button" onClick={handleLoginClick}>Login</Button>
+            <Button type="button" onClick={handleLoginClick}>
+              Login
+            </Button>
           </div>
         </form>
       </div>

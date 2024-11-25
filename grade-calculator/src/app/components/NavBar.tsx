@@ -8,12 +8,13 @@ export default function Nav({ title }: { title: NavTitle }) {
   return (
     <nav className={style.nav}>
       <Image
+        className={style.pic}
         src={calculator}
         alt="Image of a calculator"
         width={120}
         height={120}
       />
-      <h1>{title.title}</h1>
+      <h1 className="title">{title.title}</h1>
     </nav>
   );
 }
