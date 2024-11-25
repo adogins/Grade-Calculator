@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
+
+.bg {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #5a5a5a; 
+    margin-top: 3rem;
+    margin-left: 6rem;
+    margin-right: 6rem;
+    margin-bottom: 3rem;
+    border-radius: 7rem;
+}
+
+.signup {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.title {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: #000000;
+    margin-bottom: 3rem;
+    font-family: "Jomhuria", serif;
+        font-weight: 550;
+        font-style: normal;
+        font-size: 15rem;
+        color: #ffffff; 
+}
+
+.input {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border-width: 1px;
+    border-color: #000000;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.input input:focus {
+    outline: none;
+    border-color: #ff0000;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    justify-content: space-evenly;
+}
+
+.form label {
+    display: flex;
+    width: 10rem;
+    color: #000000;
+    font-family: "Oswald", serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 2.5rem;
+    padding-right: rem;
+    
+}
+
+
+
+.name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+
+.name input {
+    width: 30rem;
+    background-color: #9ea2a2;
+    color: #000000;
+}
+
+.username {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+
+
+.username input {
+    width: 30rem;
+    background-color: #9ea2a2;
+    color: #000000;
+}
+
+.email {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1rem;
+}
+
+
+
+.email input {
+    width: 30rem;
+    background-color: #9ea2a2;
+    color: #000000;
+}
+
+.password {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1rem;
+}
+
+
+
+.password input {
+    width: 30rem;
+    background-color: #9ea2a2;
+    color: #000000;
+}
+
+.submit {
+        padding-top: 0.05rem;
+        padding-bottom: 1rem; 
+        padding-left: 1.4rem;
+        padding-right: 1rem; 
+        border-radius: 1.5rem; 
+        align-items: center;
+        font-family: "Jomhuria", serif;
+        font-weight: 550;
+        font-style: normal;
+        font-size: 3rem;
+        color: #ffffff; 
+        background-color: #ba0c2f; 
+        border-color: #000000;
+        width: 11rem;
+        height: 2.7rem;
+
+}
