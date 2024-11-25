@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './Card';
+import { useEffect, useState } from 'react';
 
 
 type Course = {
@@ -7,18 +8,22 @@ type Course = {
    courseNumber: string;
    professor: string;
    syllabus: string;
-   assignments: Assignment[];
- };
- type CoursesProps = {
-   courses: Course[];
- };
-type Assignment = {
-   name: string;
-   weight: string;
-   grade: string;
+   image: string;
+   finalGrade?: number;
  };
  
- const Courses = ({ courses }: CoursesProps) => {
+ type CoursesProps = {
+   courses: Course[];
+   onDelete: (courseNumber: string) => void;
+ };
+
+
+
+ const Courses = ({ courses, onDelete }: CoursesProps) => {
+
+
+
+
    return (
      <div>
     {courses.map((course, index) => (
@@ -28,10 +33,13 @@ type Assignment = {
        courseNumber={course.courseNumber}
        professor={course.professor}
        syllabus={course.syllabus}
-       assignments={course.assignments}
+       image={course.image}
+       onDelete={onDelete}
+       finalGrade={course.finalGrade}
          />
        ))}
      </div>
    );
  };
-  export default Courses;
+
+ export default Courses;
