@@ -72,57 +72,59 @@ export default function SignupForm({ onSignup }: SignupProps) {
 
   return (
     <div className={style.bg}>
-      <h1 className={style.title}>Signup</h1>
-      <form className={style.form} onSubmit={submitHandler}>
-        {error && <p>{error}</p>}
-        <div className={style.name}>
-          <label htmlFor="name">Name</label>
-          <input
-            className={style.input}
-            id="name"
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={nameHandler}
-          />
-        </div>
-        <div className={style.username}>
-          <label htmlFor="username">Username</label>
-          <input
-            className={style.input}
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={usernameHandler}
-          />
-        </div>
-        <div className={style.email}>
-          <label htmlFor="email">Email</label>
-          <input
-            className={style.input}
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={emailHandler}
-          />
-        </div>
-        <div className={style.password}>
-          <label htmlFor="password">Password</label>
-          <input
-            className={style.input}
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={passwordHandler}
-          />
-        </div>
-      </form>
-      <Button type="submit" onClick={handleSubmitClick}>
-        Submit
-      </Button>
+      <div className={style.signup}>
+        <h1 className={style.title}>Signup</h1>
+        <form className={style.form} onSubmit={submitHandler}>
+          {error && <p>{error}</p>}
+          <div className={style.name}>
+            <label htmlFor="name">Name</label>
+            <input
+              className={style.input}
+              id="name"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={nameHandler}
+            />
+          </div>
+          <div className={style.username}>
+            <label htmlFor="username">Username</label>
+            <input
+              className={style.input}
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={usernameHandler}
+            />
+          </div>
+          <div className={style.email}>
+            <label htmlFor="email">Email</label>
+            <input
+              className={style.input}
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={emailHandler}
+            />
+          </div>
+          <div className={style.password}>
+            <label htmlFor="password">Password</label>
+            <input
+              className={style.input}
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={passwordHandler}
+            />
+          </div>
+        </form>
+        <Button type="submit" onClick={handleSubmitClick}>
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }
