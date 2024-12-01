@@ -45,7 +45,7 @@ export default function SignupForm({ onSignup }: SignupProps) {
     setPassword(event.target.value);
   };
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // new user
@@ -58,9 +58,31 @@ export default function SignupForm({ onSignup }: SignupProps) {
 
     // ensure a username and password are given
     if (!username || !password) {
-      setError("Pleaes enter a username and a password.");
+      setError("Please enter a username and a password.");
     } else {
       onSignup(newUser);
+
+      try {
+        const response = await fetch("api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        // Handle successful response
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        // Handle error
+        console.error(error);
+      }
+
       // reset form data
       setName("");
       setUsername("");
