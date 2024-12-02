@@ -38,41 +38,80 @@ export default function CourseViewPage() {
 
   const [courses, setCourses] = useState<Course[]>([]);
 
+  const userId = '674e0df37aaa04efc30c373e';
+
+ 
+
   useEffect(() => {
-    const storedCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-    if (storedCourses.length > 0) {
-      setCourses(storedCourses);
+    const fetchCourses = async () => {
+
+      try {
+        const existingCoursesResponse = await fetch(`/api/users/${userId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+         });
+
+        if (!existingCoursesResponse.ok) {
+          throw new Error('Failed to fetch courses');
+        }
+
+        const storedCourses = await existingCoursesResponse.json();
+        
+      
+        
+        setCourses(storedCourses.courses);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+
+    };
+    fetchCourses();
+  }, []);
+
+
+  const handleDelete = async (courseNumber: string) => {
+    try {
+      
+      const existingCoursesResponse = await fetch(`/api/users/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+      });
+
+      if (!existingCoursesResponse.ok) {
+        throw new Error('Failed to get courses');
+      }
+
+      const existingCourses = await existingCoursesResponse.json();
+      
+      const indexToRemove = existingCourses.courses.findIndex((course: Course) => course.courseNumber === courseNumber);  
+        
+      if (indexToRemove !== -1) {
+        existingCourses.courses.splice(indexToRemove, 1);
+      }
+      setCourses(existingCourses.courses);
+
+      const responseDelete = await fetch(`/api/users/${userId}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({courses: existingCourses}),
+      });
+  
+      if (!responseDelete.ok) {
+        throw new Error('Failed to delete course');
+      }
+  
+    } catch (error) {
+      console.error('Error deleting course:', error);
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('courses', JSON.stringify(courses));
-  }, [courses]);
-
-  const handleAddCourse = (newCourse: Course) => {
-    const updatedCourses = [...courses, newCourse];
-    setCourses(updatedCourses);
-    localStorage.setItem('courses', JSON.stringify(updatedCourses)); 
   };
-  
-  const handleDelete = (courseNumber: string) => {
-    const updatedCourses = courses.filter(
-      (course) => course.courseNumber !== courseNumber
-    );
-    setCourses(updatedCourses);
-  };
-  
-  useEffect(() => {
-    const handleStorageChange = () => {
-        const updatedCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-        setCourses(updatedCourses);
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
 
+  
   return (
     <div>
       <NavBar title={title} />
