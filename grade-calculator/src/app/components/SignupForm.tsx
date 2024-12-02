@@ -19,15 +19,15 @@ type User = {
 export default function SignupForm({ onSignup }: SignupProps) {
   const router = useRouter();
 
-  const handleSubmitClick = () => {
-    router.push("/");
-  };
+  //const handleSubmitClick = () => {
+  //  router.push("/");
+  //};
 
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const nameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -45,21 +45,46 @@ export default function SignupForm({ onSignup }: SignupProps) {
     setPassword(event.target.value);
   };
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    // new user
-    const newUser: User = {
-      name: name,
-      username: username,
-      email: email,
-      password: password,
-    };
+    // ensure all fields are filled
+    if (!name || !username || !email || !password) {
+      setError("Pleaes fill in all fields.");
+      return;
+    }
 
-    // ensure a username and password are given
-    if (!username || !password) {
-      setError("Pleaes enter a username and a password.");
-    } else {
+    const newUser: User = { name, username, email, password };
+
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setError("");
+
+        onSignup(newUser);
+
+        router.push("/");
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    }
+
+    /*else {
       onSignup(newUser);
       // reset form data
       setName("");
@@ -67,7 +92,7 @@ export default function SignupForm({ onSignup }: SignupProps) {
       setEmail("");
       setPassword("");
       setError("");
-    }
+    } */
   };
 
   return (
@@ -121,9 +146,7 @@ export default function SignupForm({ onSignup }: SignupProps) {
             />
           </div>
         </form>
-        <Button type="submit" onClick={handleSubmitClick}>
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </div>
     </div>
   );

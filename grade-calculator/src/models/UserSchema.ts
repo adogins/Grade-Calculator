@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-interface User extends Document {
+interface IUser extends Document {
   userId: string;
   username: string;
   email: string;
@@ -56,14 +56,14 @@ const CourseSchema = new Schema<Course>({
   categories: { type: [CategorySchema], default: [] },
 });
 
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<IUser>({
   userId: { type: String, required: true },
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   courses: { type: [CourseSchema], default: [] },
 });
 
-const User: Model<User> = mongoose.models.User || mongoose.model<User>("User", UserSchema);
+const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 export default User;
 
 

@@ -102,8 +102,9 @@ margin: 1rem;
 .link {
 display: flex;
 flex-direction: row;
-justify-content: space-evenly;
+justify-content: flex-end;
 padding-top: 10px;
+padding-right: 16rem;
 }
 
 
@@ -111,3 +112,4 @@ padding-top: 10px;
 color: #3940fb;
 text-decoration: underline;
 }
+
