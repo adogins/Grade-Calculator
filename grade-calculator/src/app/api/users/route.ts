@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-    const { userId, username, email, password, courses } = await request.json();
+    const { userId, username, email, password, courses} = await request.json();
     if (!userId || !username || !email || !password) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         username,
         email,
         password: hashedPassword,
-        courses: courses,
+        courses,
     }
     try {
         await User.create({ newUser});

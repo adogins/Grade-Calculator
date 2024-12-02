@@ -8,7 +8,8 @@ import Button from "./LoginButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, FormEvent } from "react";
-import { signIn } from "../../auth";
+import { signIn } from "next-auth/react";
+//import { redirect } from "next/dist/server/api-utils";
 
 type LoginProps = {
   onLogin: (user: User) => void;
@@ -22,13 +23,13 @@ type User = {
 export default function Login({ onLogin }: LoginProps) {
   const router = useRouter();
 
-  const handleLoginClick = () => {
-    router.push("/CourseView");
-  };
+  //const handleLoginClick = () => {
+  //  router.push("/CourseView");
+  //};
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const usernameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -41,22 +42,41 @@ export default function Login({ onLogin }: LoginProps) {
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // new user
-    const user: User = {
-      username: username,
-      password: password,
-    };
+    setError("");
 
-    // ensure a username and password are given
-    if (!username || !password) {
-      setError("Pleaes enter a username and a password.");
+    // call signin
+    const res = await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      setError("Invalid username or password.");
     } else {
-      onLogin(user);
-      // reset form data
+      router.push("/CourseView");
+      onLogin({ username, password });
       setUsername("");
       setPassword("");
       setError("");
     }
+
+    /* try {
+      const response = await signIn("credentials", { username, password });
+
+      if (response?.error) {
+        setError("Invalid credentials. Try again");
+      } else {
+        onLogin({ username, password });
+        setUsername("");
+        setPassword("");
+        setError("");
+        router.push("/CourseView");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("An error occurred during login.");
+    } */
   };
 
   return (
@@ -111,9 +131,7 @@ export default function Login({ onLogin }: LoginProps) {
             </Link>
           </div>
           <div className={style.btn}>
-            <Button type="submit" onClick={handleLoginClick}>
-              Login
-            </Button>
+            <Button type="submit">Login</Button>
           </div>
         </form>
       </div>

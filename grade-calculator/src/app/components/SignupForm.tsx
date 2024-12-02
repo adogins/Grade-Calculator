@@ -23,11 +23,13 @@ export default function SignupForm({ onSignup }: SignupProps) {
     router.push("/");
   };
 
+  // State to hold form inputs
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const nameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -48,6 +50,11 @@ export default function SignupForm({ onSignup }: SignupProps) {
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    // require a username and password
+    if (!username || !password) {
+      setError("Please enter a username and a password.");
+    }
+
     // new user
     const newUser: User = {
       name: name,
@@ -56,31 +63,23 @@ export default function SignupForm({ onSignup }: SignupProps) {
       password: password,
     };
 
-    // ensure a username and password are given
-    if (!username || !password) {
-      setError("Please enter a username and a password.");
-    } else {
-      onSignup(newUser);
+    onSignup(newUser);
 
-      try {
-        const response = await fetch("api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        });
+    // Begin submitting data
+    setLoading(true);
+    setError(""); // reset error message
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+    try {
+      const response = await fetch("api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
 
-        // Handle successful response
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        // Handle error
-        console.error(error);
+      if (!response.ok) {
+        throw new Error("Failed to create user.");
       }
 
       // reset form data
@@ -89,62 +88,75 @@ export default function SignupForm({ onSignup }: SignupProps) {
       setEmail("");
       setPassword("");
       setError("");
+
+      router.push("/");
+    } catch (error) {
+      // Handle error
+      console.error(error);
+      setError("An error occurred while creating your account.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={style.bg}>
-      <h1 className={style.title}>Signup</h1>
-      <form className={style.form} onSubmit={submitHandler}>
-        {error && <p>{error}</p>}
-        <div className={style.name}>
-          <label htmlFor="name">Name</label>
-          <input
-            className={style.input}
-            id="name"
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={nameHandler}
-          />
-        </div>
-        <div className={style.username}>
-          <label htmlFor="username">Username</label>
-          <input
-            className={style.input}
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={usernameHandler}
-          />
-        </div>
-        <div className={style.email}>
-          <label htmlFor="email">Email</label>
-          <input
-            className={style.input}
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={emailHandler}
-          />
-        </div>
-        <div className={style.password}>
-          <label htmlFor="password">Password</label>
-          <input
-            className={style.input}
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={passwordHandler}
-          />
-        </div>
-      </form>
-      <Button type="submit" onClick={handleSubmitClick}>
-        Submit
-      </Button>
+      <div className={style.signup}>
+        <h1 className={style.title}>Signup</h1>
+        <form className={style.form} onSubmit={submitHandler}>
+          {error && <p>{error}</p>}
+          <div className={style.name}>
+            <label htmlFor="name">Name</label>
+            <input
+              className={style.input}
+              id="name"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={nameHandler}
+            />
+          </div>
+          <div className={style.username}>
+            <label htmlFor="username">Username</label>
+            <input
+              className={style.input}
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={usernameHandler}
+            />
+          </div>
+          <div className={style.email}>
+            <label htmlFor="email">Email</label>
+            <input
+              className={style.input}
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={emailHandler}
+            />
+          </div>
+          <div className={style.password}>
+            <label htmlFor="password">Password</label>
+            <input
+              className={style.input}
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={passwordHandler}
+            />
+          </div>
+        </form>
+        <Button
+          type="submit"
+          disabled={loading} /*onClick={handleSubmitClick}*/
+        >
+          {loading ? "Submitting..." : "Submit"}
+        </Button>
+      </div>
     </div>
   );
 }
