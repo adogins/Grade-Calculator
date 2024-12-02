@@ -61,7 +61,7 @@ export default function Login({ onLogin }: LoginProps) {
       setError("");
     }
 
-    /* try {
+    try {
       const response = await signIn("credentials", { username, password });
 
       if (response?.error) {
@@ -76,7 +76,7 @@ export default function Login({ onLogin }: LoginProps) {
     } catch (err) {
       console.error("Login error:", err);
       setError("An error occurred during login.");
-    } */
+    }
   };
 
   return (
