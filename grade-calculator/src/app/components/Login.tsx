@@ -66,12 +66,11 @@ export default function Login(/*{ onLogin }: LoginProps*/) {
       );
 
       // check if login was successful
-      if (response?.ok) {
-        setError("");
-        router.push("/CourseView");
+      if (response?.error) {
+        // show error message if login failed
+        setError("Invalid credentials or login failed. Please try again.");
       } else {
-        // show error message is login failed
-        setError("Invalid credentials. Please try again");
+        router.push("/CourseView");
       }
     } catch (err) {
       // handle other errors
@@ -93,6 +92,7 @@ export default function Login(/*{ onLogin }: LoginProps*/) {
               <input
                 className={style.input}
                 id="username"
+                name="username"
                 type="text"
                 placeholder="Enter your username"
                 value={username}
@@ -111,6 +111,7 @@ export default function Login(/*{ onLogin }: LoginProps*/) {
               <input
                 className={style.input}
                 id="password"
+                name="password"
                 type="password"
                 placeholder="Enter your password"
                 value={password}

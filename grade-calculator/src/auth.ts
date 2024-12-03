@@ -19,7 +19,7 @@ export const {
             },
             async authorize(credentials) {
                 //if (!credentials) return null;
-
+                console.log("Credentials:", credentials);
                 if (!credentials?.username || typeof credentials.username !== 'string') {
                     return null;
                 }
@@ -30,7 +30,7 @@ export const {
 
                 try {
                     const user = await User.findOne({ username: credentials.username }).lean();
-
+                    console.log(user);
                     if (user) {
                         const isMatch = await bcrypt.compare(
                             credentials.password,
