@@ -7,7 +7,7 @@ const { auth } = NextAuth(authConfig);
 export async function middleware(request: any) {
     const { nextUrl } = request;
     const session = await auth();
-    const isAuthenticated = !!session?.user;
+    const isAuthenticated = !session?.user;
     console.log(isAuthenticated, nextUrl.pathname);
 
     const reqUrl = new URL(request.url);
@@ -17,9 +17,9 @@ export async function middleware(request: any) {
     return NextResponse.next();
 }
 
-export const config = {
+/*export const config = {
     matcher: [
         "/api/users/",
         "/api/users/[userId]/:path*"
     ],
-};
+};*/

@@ -10,6 +10,7 @@ type SignupProps = {
 };
 
 type User = {
+  userId: string;
   name: string;
   username: string;
   email: string;
@@ -54,7 +55,9 @@ export default function SignupForm({ onSignup }: SignupProps) {
       return;
     }
 
-    const newUser: User = { name, username, email, password };
+    const userId = Math.floor(Math.random() * 1000).toString();
+
+    const newUser: User = { userId, name, username, email, password };
 
     try {
       const response = await fetch("/api/users", {
@@ -75,7 +78,6 @@ export default function SignupForm({ onSignup }: SignupProps) {
         setError("");
 
         onSignup(newUser);
-
         router.push("/");
       } else {
         setError(data.message || "Something went wrong. Please try again.");
@@ -83,13 +85,6 @@ export default function SignupForm({ onSignup }: SignupProps) {
     } catch (error) {
       setError("An error occurred. Please try again.");
     }
-
-    // reset form data
-    setName("");
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setError("");
   };
 
   return (
@@ -142,8 +137,8 @@ export default function SignupForm({ onSignup }: SignupProps) {
               onChange={passwordHandler}
             />
           </div>
+          <Button type="submit">Submit</Button>
         </form>
-        <Button type="submit">Submit</Button>
       </div>
     </div>
   );
