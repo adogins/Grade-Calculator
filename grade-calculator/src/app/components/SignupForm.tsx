@@ -5,9 +5,9 @@ import style from "./SignupForm.module.css";
 import { useRouter } from "next/navigation";
 import Button from "./SubmitButton";
 
-type SignupProps = {
-  onSignup: (newUser: User) => void;
-};
+//type SignupProps = {
+//  onSignup: (newUser: User) => void;
+//};
 
 type User = {
   userId: string;
@@ -17,7 +17,7 @@ type User = {
   password: string;
 };
 
-export default function SignupForm({ onSignup }: SignupProps) {
+export default function SignupForm(/*{ onSignup }: SignupProps*/) {
   const router = useRouter();
 
   //const handleSubmitClick = () => {
@@ -77,7 +77,7 @@ export default function SignupForm({ onSignup }: SignupProps) {
         setPassword("");
         setError("");
 
-        onSignup(newUser);
+        //onSignup(newUser);
         router.push("/");
       } else {
         setError(data.message || "Something went wrong. Please try again.");

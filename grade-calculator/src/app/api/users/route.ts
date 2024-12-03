@@ -38,8 +38,6 @@ export async function POST(request: NextRequest) {
 
         const createdUser = await User.create(newUser);
         return NextResponse.json({ message: 'User created successfully', user: createdUser, password: password}, {status: 201 });
-        //await User.create(newUser);
-        //return NextResponse.json({message: 'Item added successfully'}, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
     }
