@@ -100,15 +100,16 @@
     width: 100%;
  }
  
- 
  .editButton, .deleteButton {
-    background-color: #ffffff;
-    color: #333333;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    width: 48%;
- }
+   background-color: #ffffff;
+   color: #333333;
+   padding: 10px 10px;
+   border: none;
+   border-radius: 5px;
+   width: 48%;
+   margin-left: 10px;
+}
+
  
  
  .editButton:hover, .deleteButton:hover {
