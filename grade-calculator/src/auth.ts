@@ -45,11 +45,11 @@ export const {
                                 courses: user.courses,
                             };
                         } else {
-                            console.log("Email or Password is not correct");
+                            console.log("Email or Password is not correct1");
                             return null;
                         }
                     } else {
-                        console.log("Email or Password is not correct");
+                        console.log("Email or Password is not correct2");
                         return null;
                     }
                 } catch (error) {
