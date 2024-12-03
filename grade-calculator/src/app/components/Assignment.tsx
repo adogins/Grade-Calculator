@@ -3,7 +3,7 @@ import style from "./Assignment.module.css";
 
 type AssignmentProps = {
     assignment: {
-        id: string;
+        assignmentId: string;
         assignmentName: string;
         grade: number | null;
     };

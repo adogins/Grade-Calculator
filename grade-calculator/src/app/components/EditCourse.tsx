@@ -8,11 +8,11 @@ import { useSearchParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
 type CategoryType = {
-    id: string;
+    categoryId: string;
     categoryName: string;
     weight: number | null;
     assignments: {
-        id: string;
+        assignmentId: string;
         assignmentName: string;
         grade: number | null;
     }[];
@@ -39,7 +39,7 @@ export default function EditCourse() {
 
                 const userData = await response.json();
 
-                // Find the specific course by courseNumber
+              
                 const courseToEdit = userData.courses.find(
                     (course: any) => course.courseNumber === courseNumberToEdit
                 );
@@ -48,7 +48,7 @@ export default function EditCourse() {
                     throw new Error('Course not found');
                 }
 
-                // Populate the categories and other course data
+              
                 setCategories(courseToEdit.categories || []);
 
             } catch (error) {
@@ -58,39 +58,38 @@ export default function EditCourse() {
         };
 
         fetchCourseData();
-    }, [courseNumberToEdit]); // Fetch only when courseNumber changes
+    }, [courseNumberToEdit]);
 
     
 
     const addCategory = () => {
         const newCategory: CategoryType = { 
-            id: uuidv4(),
+            categoryId: uuidv4(),
             categoryName: '',
             weight: null,
             assignments: [],
         };
         setCategories([...categories, newCategory]);
-        
     };
 
     const updateCategory = (categoryId: string, field: 'categoryName' | 'weight' | 'assignments', value: string | number | AssignmentType[]) => {
         setCategories((prevCategories) =>
             prevCategories.map((category) =>
-                category.id === categoryId ? { ...category, [field]: value } : category
+                category.categoryId === categoryId ? { ...category, [field]: Array.isArray(value) ? [...value] : value } : category
             )
         );
     };
     
     const deleteCategory = (id: string) => {
-        setCategories(categories.filter((category) => category.id !== id));
+        setCategories(categories.filter((category) => category.categoryId !== id));
     };
 
     const updateAssignment = (categoryId: string, assignmentId: string, field: 'assignmentName' | 'grade', value: string | number) => {
         setCategories((prevCategories) =>
-            prevCategories.map((category) => category.id === categoryId ? {
+            prevCategories.map((category) => category.categoryId === categoryId ? {
                 ...category,
                 assignments: category.assignments.map((assignment) =>
-                    assignment.id === assignmentId ? { 
+                    assignment.assignmentId === assignmentId ? { 
                         ...assignment, [field]: value 
                     } : assignment),
             } : category)
@@ -100,8 +99,8 @@ export default function EditCourse() {
     const deleteAssignment = (categoryId: string, assignmentId: string) => {
         setCategories((prevCategories) =>
             prevCategories.map((category) =>
-                category.id === categoryId
-                    ? { ...category, assignments: category.assignments.filter((assignment) => assignment.id !== assignmentId) }
+                category.categoryId === categoryId
+                    ? { ...category, assignments: category.assignments.filter((assignment) => assignment.assignmentId !== assignmentId) }
                     : category
             )
         );
@@ -264,18 +263,22 @@ export default function EditCourse() {
                     <div className={style.categoryContainer}>
                         
                         <div className={style.cats}>
-                
+
                             {categories.map((category) => (
-                            <div key={category.id}>
+                            <div key={category.categoryId}>
                                 <Category
                                     category={category}
-                                    onUpdateCategory={(field, value) => updateCategory(category.id, field, value)}
-                                    onDeleteCategory={() => deleteCategory(category.id)}
+                                    onUpdateCategory={(field, value) => updateCategory(category.categoryId, field, value)}
+                                    onDeleteCategory={() => deleteCategory(category.categoryId)}
                                     onUpdateAssignment={updateAssignment}
                                     onDeleteAssignment={deleteAssignment}
                                 />
                             </div>
                             ))}
+                        
+
+
+
                         
                         </div>
 

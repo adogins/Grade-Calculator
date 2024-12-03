@@ -5,14 +5,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export type AssignmentType = {
-    id: string;
+    assignmentId: string;
     assignmentName: string;
     grade: number | null;
 };
 
 type CategoryProps = {
     category: {
-        id: string;
+        categoryId: string;
         categoryName: string;
         weight: number | null;
         assignments: AssignmentType[];
@@ -36,7 +36,7 @@ export default function Category({ category, onUpdateCategory, onDeleteCategory,
 
     const addAssignment = () => {
         const newAssignment: AssignmentType = { 
-            id: uuidv4(),
+            assignmentId: uuidv4(),
             assignmentName: '',
             grade: null,
         };
@@ -74,15 +74,23 @@ export default function Category({ category, onUpdateCategory, onDeleteCategory,
 
             <div className={style.assignmentList} >
                 <div>
+                    
+
+
+
                     {category.assignments.map((assignment) => (
-                    <div key={assignment.id}>
+                    <div key={assignment.assignmentId}>
                         <Assignment
                             assignment={assignment}
-                            onUpdate={(field, value) => onUpdateAssignment(category.id, assignment.id, field, value)}
-                            onDelete={() => onDeleteAssignment(category.id, assignment.id)}
+                            onUpdate={(field, value) => onUpdateAssignment(category.categoryId, assignment.assignmentId, field, value)}
+                            onDelete={() => onDeleteAssignment(category.categoryId, assignment.assignmentId)}
                         />
                     </div>
                     ))}
+                    
+
+
+                    
                 </div>
 
                 <button onClick={addAssignment}>Add Assignment</button>

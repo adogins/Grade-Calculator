@@ -88,18 +88,19 @@ export default function CourseViewPage() {
       const existingCourses = await existingCoursesResponse.json();
       
       const indexToRemove = existingCourses.courses.findIndex((course: Course) => course.courseNumber === courseNumber);  
-        
-      if (indexToRemove !== -1) {
-        existingCourses.courses.splice(indexToRemove, 1);
-      }
-      setCourses(existingCourses.courses);
+       
+      const updatedCourses = existingCourses.courses.filter(
+        (course: Course) => course.courseNumber !== courseNumber
+      );
+
+    setCourses(updatedCourses);
 
       const responseDelete = await fetch(`/api/users/${userId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({courses: existingCourses}),
+          body: JSON.stringify({courses: updatedCourses}),
       });
   
       if (!responseDelete.ok) {
