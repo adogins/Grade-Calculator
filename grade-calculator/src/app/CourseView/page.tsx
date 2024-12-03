@@ -38,7 +38,7 @@ export default function CourseViewPage() {
 
   const [courses, setCourses] = useState<Course[]>([]);
 
-  const userId = '674e0df37aaa04efc30c373e';
+  const userId = '674e7e5b38cf8c6df6dfb75a';
 
  
 

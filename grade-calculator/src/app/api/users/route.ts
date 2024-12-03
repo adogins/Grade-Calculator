@@ -14,13 +14,13 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-    const { userId, username, email, password, courses } = await request.json();
+    const { userId, username, name, email, password, courses } = await request.json();
     if (!userId || !username || !email || !password) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     await connectMongoDB();
     try {
-        await User.create({ userId, username, email, password, courses });
+        await User.create({ userId, username, name, email, password, courses });
         return NextResponse.json({message: 'Item added successfully'}, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });

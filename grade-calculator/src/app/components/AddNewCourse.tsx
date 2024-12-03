@@ -57,13 +57,8 @@ export default function AddNewCourse() {
             image: image,
         };
 
-        // ADDING A COURSE / EDITING COURSE INFO
-        /*
-        const existingCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-        localStorage.setItem('courses', JSON.stringify([...existingCourses, CourseData]));
-        */
 
-        const userId = '674e0df37aaa04efc30c373e';
+        const userId = '674e7e5b38cf8c6df6dfb75a';
         
 
         try {
@@ -73,6 +68,11 @@ export default function AddNewCourse() {
                     'Content-Type': 'application/json',
                 },
             });
+
+            if (!existingCoursesResponse.ok) {
+                const errorData = await existingCoursesResponse.json();
+                throw new Error(errorData.error || 'Failed to add course');
+            }
 
             const existingCourses = await existingCoursesResponse.json();
             const updatedCourses = [...existingCourses.courses, CourseData];
@@ -85,30 +85,21 @@ export default function AddNewCourse() {
                 body: JSON.stringify({courses: updatedCourses}),
             });
 
-            console.log('checkpoint 1 reached');
-            console.log('Responce:', response);
-            
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to add course');
             }
             
-            console.log('checkpoint 2 reached');
-
             const data = await response.json();
-
-            console.log('checkpoint 3 reached');
 
         } catch (error) {
             setErrorMessage("An Error Occured.");
             console.log(error);
         }
 
-
         console.log("From AddNewCourse, the CourseData:");
         console.log(CourseData);
        
-
         setCourseName('');
         setCourseNumber('');
         setProfessor('');
