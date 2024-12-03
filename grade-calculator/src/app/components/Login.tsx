@@ -44,7 +44,7 @@ export default function Login(/*{ onLogin }: LoginProps*/) {
 
     // ensure a username and password are given
     if (!username || !password) {
-      setError("Pleaes enter a username and a password.");
+      setError("Please enter a username and a password.");
       return;
     }
 
