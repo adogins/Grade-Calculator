@@ -17,7 +17,7 @@ export const {
                 username: {},
                 password: {},
             },
-            async authorize(credentials/*: Partial<Record<"username" | "password", unknown>>*/): Promise<any | null> {
+            async authorize(credentials) {
                 //if (!credentials) return null;
 
                 if (!credentials?.username || typeof credentials.username !== 'string') {
@@ -28,7 +28,6 @@ export const {
                     return null;
                 }
 
-                //const { username, password } = credentials;
                 try {
                     const user = await User.findOne({ username: credentials.username }).lean();
 

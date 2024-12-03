@@ -84,15 +84,12 @@ export default function SignupForm({ onSignup }: SignupProps) {
       setError("An error occurred. Please try again.");
     }
 
-    /*else {
-      onSignup(newUser);
-      // reset form data
-      setName("");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setError("");
-    } */
+    // reset form data
+    setName("");
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setError("");
   };
 
   return (

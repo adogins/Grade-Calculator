@@ -10,16 +10,16 @@ import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { doCredentialLogin } from "../actions";
 
-type LoginProps = {
-  onLogin: (user: User) => void;
-};
+//type LoginProps = {
+//  onLogin: (user: User) => void;
+//};
 
 type User = {
   username: string;
   password: string;
 };
 
-export default function Login({ onLogin }: LoginProps) {
+export default function Login(/*{ onLogin }: LoginProps*/) {
   const router = useRouter();
 
   //const handleLoginClick = () => {
@@ -29,6 +29,7 @@ export default function Login({ onLogin }: LoginProps) {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const usernameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -44,13 +45,20 @@ export default function Login({ onLogin }: LoginProps) {
     // ensure a username and password are given
     if (!username || !password) {
       setError("Pleaes enter a username and a password.");
+      return;
     }
 
+    setLoading(true);
+    setError("");
     // new user
-    const user: User = {
-      username: username,
-      password: password,
-    };
+    //const user: User = {
+    //  username: username,
+    //  password: password,
+    //};
+
+    //const formData = new FormData();
+    //formData.append("username", username);
+    //formData.append("password", password);
 
     try {
       const response = await doCredentialLogin(
@@ -65,9 +73,12 @@ export default function Login({ onLogin }: LoginProps) {
         // show error message is login failed
         setError("Invalid credentials. Please try again");
       }
-    } catch (error) {
+    } catch (err) {
       // handle other errors
+      console.error("Login failed:", err);
       setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,7 +134,9 @@ export default function Login({ onLogin }: LoginProps) {
             </Link>
           </div>
           <div className={style.btn}>
-            <Button type="submit">Login</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
           </div>
         </form>
       </div>
