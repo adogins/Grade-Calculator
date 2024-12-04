@@ -1,0 +1,38 @@
+.errorPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #b3b2b2;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.errorCode {
+  font-size: 10rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.errorMessage {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.homeLink {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #bd0d04;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.homeLink:hover {
+  background-color: #5e0000;
+}
