@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import style from "./AddNewCourse.module.css";
-import { useRouter} from 'next/router';
+import { useRouter} from 'next/navigation';
 import ExitNewCourseButton from "../components/ExitNewCourseButton";
 import SubmitNewCourseButton from './SubmitNewCourseButton';
 import { useSearchParams } from 'next/navigation';
@@ -23,14 +23,14 @@ const UpdateCourse = () => {
     const [image, setImage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
-    const { courseId } = router.query; // Retrieve `courseId` from the route
+ 
     const [loading, setLoading] = useState(true);
     const userId='674e7e4938cf8c6df6dfb756';
     const searchParams=useSearchParams();
     const courseNumbertoEdit= searchParams.get('courseNumber');
    
     useEffect(() => {
-        if (!courseId) return;
+   
 
         const fetchCourseData = async () => {
           
@@ -64,7 +64,7 @@ const UpdateCourse = () => {
         };
 
         fetchCourseData();
-    }, [courseId]);
+    }, [courseNumbertoEdit]);
 
     const courseNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setCourseName(event.target.value);
     const courseNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setCourseNumber(event.target.value);
@@ -75,7 +75,7 @@ const UpdateCourse = () => {
     const submitHandler = async (event: FormEvent) => {
         event.preventDefault();
 
-        if (!courseId) return;
+
 
         const updatedCourse = {
             courseName,
@@ -86,24 +86,49 @@ const UpdateCourse = () => {
         };
 
         try {
-            const response = await fetch(`/api/user/${userId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedCourse),
+            const userResponse = await fetch(`/api/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update course');
+            if (!userResponse.ok) {
+                const errorData = await userResponse.json();
+                throw new Error(errorData.error || 'Failed to get user info ');
             }
 
-            router.push('/CourseView'); // Redirect after successful update
-        } catch (error) {
-            console.error('Error updating course:', error);
-            setErrorMessage('Failed to update the course.');
-        }
+            const userInfo = await userResponse.json();
+            const updatedCourses = userInfo.courses.map((course: any) => {
+                if (course.courseNumber === courseNumbertoEdit) {
+                    return {
+                        ...course,...updatedCourse }
+                    }return course;});
+
+               
+               
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ courses: updatedCourses }), 
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update course data');
+                }
+
+                const data = await response.json();
+                console.log("Course data updated successfully:", data);
+                router.push('../CourseView');
+            } catch (error) {
+                setErrorMessage("An error occurred while updating the course.");
+                console.log(error);
+            }
     };
 
-    if (loading) return <div>Loading...</div>;
   return (
         <div>
             <section className={style.bg}>
