@@ -57,10 +57,8 @@ export default function AddNewCourse() {
             image: image,
         };
 
-
         const userId = '674e7e5b38cf8c6df6dfb75a';
-        
-
+      
         try {
             const existingCoursesResponse = await fetch(`/api/users/${userId}`, {
                 method: 'GET',

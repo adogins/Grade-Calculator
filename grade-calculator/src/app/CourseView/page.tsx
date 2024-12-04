@@ -40,8 +40,6 @@ export default function CourseViewPage() {
 
   const userId = '674e7e5b38cf8c6df6dfb75a';
 
- 
-
   useEffect(() => {
     const fetchCourses = async () => {
 
@@ -93,7 +91,7 @@ export default function CourseViewPage() {
         (course: Course) => course.courseNumber !== courseNumber
       );
 
-    setCourses(updatedCourses);
+      setCourses(updatedCourses);
 
       const responseDelete = await fetch(`/api/users/${userId}`, {
           method: 'PUT',
