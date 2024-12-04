@@ -1,12 +1,21 @@
+"use client";
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import style from "./AddNewCourse.module.css";
 import { useRouter} from 'next/router';
 import ExitNewCourseButton from "../components/ExitNewCourseButton";
 import SubmitNewCourseButton from './SubmitNewCourseButton';
+import { useSearchParams } from 'next/navigation';
 
 
+type Course = {
+    courseName: string;
+    courseNumber: string;
+    professor: string;
+    syllabus: string;
+    image: string;
+};
 
-const UpdateCourse=()=>{
+const UpdateCourse = () => {
     const [courseName, setCourseName] = useState('');
     const [courseNumber, setCourseNumber] = useState('');
     const [professor, setProfessor] = useState('');
@@ -14,44 +23,48 @@ const UpdateCourse=()=>{
     const [image, setImage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
+    const { courseId } = router.query; // Retrieve `courseId` from the route
     const [loading, setLoading] = useState(true);
-    const { userId, courseId } = router.query;
+    const userId='674e7e4938cf8c6df6dfb756';
+    const searchParams=useSearchParams();
+    const courseNumbertoEdit= searchParams.get('courseNumber');
    
-    //const userId = '674e7e4938cf8c6df6dfb756';
     useEffect(() => {
-      if (userId && courseId) {
-          fetchCourseDetails(userId as string, courseId as string);
-      }
-  }, [userId, courseId]);
+        if (!courseId) return;
 
+        const fetchCourseData = async () => {
+          
+            try {
+                const response = await fetch(`/api/users/${userId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch course data');
+                }
 
-  const fetchCourseDetails = async (userId: string, courseId: string) => {
-    try {
-        const res = await fetch(`/api/users/${userId}`);
-        if (!res.ok) throw new Error('Failed to fetch user data');
+                const userData = await response.json();
+                
 
-        const CourseData = await res.json();
+                const courseToEdit = userData.courses.find(
+                    (course:any)=> course.courseNumber === courseNumbertoEdit
+                    
+                );
+                console.log('Fetched course:', courseToEdit);//DEBUGTESTING
 
-        const courseToEdit = CourseData.courses.find(
-            (course: any) => course.id === courseId
-        );
+                setCourseName(courseToEdit.courseName);
+                setCourseNumber(courseToEdit.courseNumber);
+                setProfessor(courseToEdit.professor);
+                setSyllabus(courseToEdit.syllabus);
+                setImage(courseToEdit.image);
 
-        if (!courseToEdit) {
-            setErrorMessage('Course not found.');
-            return;
-        }
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching course data:', error);
+                setErrorMessage('Failed to load course data.');
+                setLoading(false);
+            }
+        };
 
-        setCourseName(courseToEdit.courseName);
-        setCourseNumber(courseToEdit.courseNumber);
-        setProfessor(courseToEdit.professor);
-        setSyllabus(courseToEdit.syllabus);
-        setImage(courseToEdit.image);
-    } catch (error) {
-        setErrorMessage('An error occurred while fetching course details.');
-        console.error(error);
-    }
-};
-
+        fetchCourseData();
+    }, [courseId]);
 
     const courseNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setCourseName(event.target.value);
     const courseNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setCourseNumber(event.target.value);
@@ -62,42 +75,36 @@ const UpdateCourse=()=>{
     const submitHandler = async (event: FormEvent) => {
         event.preventDefault();
 
-        if (courseName.trim() === '' || 
-            courseNumber.trim() === '' || 
-            professor.trim() === '' || 
-            syllabus.trim() === '' || 
-            image.trim() === '') {
-            setErrorMessage('All fields must be filled out.');
-            return;
-        }
+        if (!courseId) return;
 
-        if (!image.startsWith('https://images.unsplash.com/')) {
-            setErrorMessage('The image URL must start with https://images.unsplash.com/.');
-            return;
-        }
-
+        const updatedCourse = {
+            courseName,
+            courseNumber,
+            professor,
+            syllabus,
+            image
+        };
 
         try {
-          const updatedCourse = { courseName, courseNumber, professor, syllabus, image };
-          const res = await fetch(`/api/users/${userId}/courses/${courseId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedCourse),
-          });
-    
-          if (!res.ok) throw new Error(await res.text());
-    
-          alert('Course updated successfully');
-          router.push('../CourseView');
-        } catch (error) {
-          setErrorMessage("An error occurred while updating the course.");
-          console.error(error);
-        }
-      };
-    
-    if (loading) return <div>Loading...</div>;
+            const response = await fetch(`/api/user/${userId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedCourse),
+            });
 
-    return (
+            if (!response.ok) {
+                throw new Error('Failed to update course');
+            }
+
+            router.push('/CourseView'); // Redirect after successful update
+        } catch (error) {
+            console.error('Error updating course:', error);
+            setErrorMessage('Failed to update the course.');
+        }
+    };
+
+    if (loading) return <div>Loading...</div>;
+  return (
         <div>
             <section className={style.bg}>
                 <div className={style.Xbutton}>
@@ -116,17 +123,9 @@ const UpdateCourse=()=>{
             value={courseName}
             onChange={courseNameChangeHandler}
         />
+        
 
-        <h2 className={style.courseItem}>Course Number:</h2>
-        <input 
-            className={style.courseItem}
-            id="courseNumber"
-            type="text"
-            placeholder={courseNumber || "ex. CSCI 4300"}
-            value={courseNumber}
-            onChange={courseNumberChangeHandler}     
-        />
-
+        
         <h2 className={style.courseItem}>Professor:</h2>
         <input 
             className={style.courseItem}
@@ -136,6 +135,15 @@ const UpdateCourse=()=>{
             value={professor}
             onChange={professorChangeHandler} 
         />
+        <h2 className={style.courseItem}>Course Number:</h2>
+       <input
+           className={style.courseItem}
+           id="courseNumber"
+           type="text"
+           placeholder={courseNumber || "ex. CSCI 4300"}
+            value={courseNumber}
+           onChange={courseNumberChangeHandler}    
+       />
 
         <h2 className={style.courseItem}>Link to Syllabus:</h2>
         <input 
@@ -163,6 +171,8 @@ const UpdateCourse=()=>{
     <div className={style.submitButton}>
         <SubmitNewCourseButton type="submit">Update Course</SubmitNewCourseButton>
     </div>
+
+
 </form>
 
             </section>
@@ -171,3 +181,5 @@ const UpdateCourse=()=>{
 }
 
 export default UpdateCourse;
+
+

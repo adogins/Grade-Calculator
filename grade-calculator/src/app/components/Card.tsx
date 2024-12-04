@@ -19,6 +19,7 @@ type CardProps = {
  image: string;
  onDelete: (courseNumber: string) => void;
  finalGrade?: number;
+
 };
 
 
@@ -32,18 +33,17 @@ const Card = ({
  image,
  onDelete,
  finalGrade,
+
 }: CardProps) => {
    const router = useRouter();
     const handleEditClick = () => {
      router.push(`/EditCoursePage?courseNumber=${courseNumber}`);
    };
 
-
-   const handleUpdateCourse = () => {
-     router.push(`/UpdateCoursePage?courseNumber=${courseNumber}`);
-   };
-
-
+   const handleUpdateCourse = () => {{
+      router.push(`/UpdateCoursePage/?courseNumber=${courseNumber}`);
+   
+   }}
   
 
 
@@ -82,3 +82,4 @@ const Card = ({
 
 
 export default Card;
+
