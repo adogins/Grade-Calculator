@@ -6,7 +6,7 @@ interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  courses: Course[]; // Array of classes
+  courses: Course[];
 }
 
 interface Course {
@@ -17,14 +17,14 @@ interface Course {
   syllabus: string;
   image: string;
   finalGrade: number; 
-  categories: Category[]; // Array of categories
+  categories: Category[];
 }
 
 interface Category {
   categoryId: string;
   categoryName: string;
-  weight: number; // Percentage weight of this category
-  assignments: Assignment[]; // Array of assignments
+  weight: number;
+  assignments: Assignment[];
 }
 
 interface Assignment {
@@ -61,9 +61,10 @@ const CourseSchema = new Schema<Course>({
 
 const UserSchema = new Schema<IUser>({
   userId: { type: String, required: true },
-  name: {type: String, required: true},
-  username: { type: String, required: true },
+  name: {type: String, required: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   courses: { type: [CourseSchema], default: [] },
 });
 

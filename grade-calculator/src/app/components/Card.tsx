@@ -35,24 +35,20 @@ const Card = ({
  finalGrade,
 
 }: CardProps) => {
-   const router = useRouter();
-    const handleEditClick = () => {
-     router.push(`/EditCoursePage?courseNumber=${courseNumber}`);
-   };
-
-   const handleUpdateCourse = () => {{
-      router.push(`/UpdateCoursePage/?courseNumber=${courseNumber}`);
+    const router = useRouter();
    
-   }}
-  
-
-
-
-
-   const handleDeleteClick = () => {
-     onDelete(courseNumber);
-   };
-    console.log("Final Grade from Card.tsx:", finalGrade);
+    const handleEditClick = () => {
+      router.push(`/EditCoursePage?courseNumber=${courseNumber}`);
+    };
+        
+    const handleUpdateCourse = () => {
+      router.push(`/UpdateCoursePage/?courseNumber=${courseNumber}`);
+    }
+        
+    const handleDeleteClick = () => {
+      onDelete(courseNumber);
+    };
+   
     return (
      <div className={style.cardContainer}>
        <div className={style.card} style={{ backgroundImage: `url(${image})` }}>

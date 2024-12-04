@@ -38,9 +38,7 @@ export default function CourseViewPage() {
 
   const [courses, setCourses] = useState<Course[]>([]);
 
-  const userId = '674e7e4938cf8c6df6dfb756';
-
- 
+  const userId = '674e7e5b38cf8c6df6dfb75a';
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -88,18 +86,19 @@ export default function CourseViewPage() {
       const existingCourses = await existingCoursesResponse.json();
       
       const indexToRemove = existingCourses.courses.findIndex((course: Course) => course.courseNumber === courseNumber);  
-        
-      if (indexToRemove !== -1) {
-        existingCourses.courses.splice(indexToRemove, 1);
-      }
-      setCourses(existingCourses.courses);
+       
+      const updatedCourses = existingCourses.courses.filter(
+        (course: Course) => course.courseNumber !== courseNumber
+      );
+
+      setCourses(updatedCourses);
 
       const responseDelete = await fetch(`/api/users/${userId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({courses: existingCourses}),
+          body: JSON.stringify({courses: updatedCourses}),
       });
   
       if (!responseDelete.ok) {
