@@ -5,7 +5,6 @@ import ExitNewCourseButton from "../components/ExitNewCourseButton";
 import SubmitNewCourseButton from './SubmitNewCourseButton';
 
 
-
 export default function AddNewCourse() {
     
     const [courseName, setCourseName] = useState('');
@@ -31,7 +30,7 @@ export default function AddNewCourse() {
         setImage(event.target.value);
     }
 
-    const submitHandler = (event: FormEvent) => {
+    const submitHandler = async (event: FormEvent) => {
         event.preventDefault();
 
         if (courseName.trim() === '' || 
@@ -58,13 +57,49 @@ export default function AddNewCourse() {
             image: image,
         };
 
-        const existingCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-        localStorage.setItem('courses', JSON.stringify([...existingCourses, CourseData]));
+
+        const userId = '674e7e5b38cf8c6df6dfb75a';
+        
+
+        try {
+            const existingCoursesResponse = await fetch(`/api/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!existingCoursesResponse.ok) {
+                const errorData = await existingCoursesResponse.json();
+                throw new Error(errorData.error || 'Failed to add course');
+            }
+
+            const existingCourses = await existingCoursesResponse.json();
+            const updatedCourses = [...existingCourses.courses, CourseData];
+
+            const response = await fetch(`/api/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({courses: updatedCourses}),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to add course');
+            }
+            
+            const data = await response.json();
+
+        } catch (error) {
+            setErrorMessage("An Error Occured.");
+            console.log(error);
+        }
 
         console.log("From AddNewCourse, the CourseData:");
         console.log(CourseData);
        
-
         setCourseName('');
         setCourseNumber('');
         setProfessor('');

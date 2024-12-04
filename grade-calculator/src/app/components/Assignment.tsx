@@ -3,18 +3,18 @@ import style from "./Assignment.module.css";
 
 type AssignmentProps = {
     assignment: {
-        id: number;
-        name: string;
+        assignmentId: string;
+        assignmentName: string;
         grade: number | null;
     };
-    onUpdate: (field: 'name' | 'grade', value: string) => void;
+    onUpdate: (field: 'assignmentName' | 'grade', value: string) => void;
     onDelete: () => void; 
 };
 
 export default function Assignment({ assignment, onUpdate, onDelete }: AssignmentProps) {
 
     const assignmentNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        onUpdate('name', event.target.value);
+        onUpdate('assignmentName', event.target.value);
     };
     const assignmentGradeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         onUpdate('grade', event.target.value);
@@ -27,7 +27,7 @@ export default function Assignment({ assignment, onUpdate, onDelete }: Assignmen
                     id="assignmentName"
                     type="text"
                     placeholder="Assignment Name"
-                    value={assignment.name}
+                    value={assignment.assignmentName}
                     onChange={assignmentNameChangeHandler}    
                 />
 

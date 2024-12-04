@@ -38,9 +38,7 @@ const Card = ({
     const handleDeleteClick = () => {
       onDelete(courseNumber);
     };
-  
-    console.log("Final Grade from Card.tsx:", finalGrade);
-  
+    
     return (
       <div className={style.cardContainer}>
         <div className={style.card} style={{ backgroundImage: `url(${image})` }}>

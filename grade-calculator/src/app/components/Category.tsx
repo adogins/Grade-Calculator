@@ -1,30 +1,32 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import style from "./Category.module.css";
 import Assignment from './Assignment'
+import { v4 as uuidv4 } from 'uuid';
+
 
 export type AssignmentType = {
-    id: number;
-    name: string;
+    assignmentId: string;
+    assignmentName: string;
     grade: number | null;
 };
 
 type CategoryProps = {
     category: {
-        id: number;
-        name: string;
+        categoryId: string;
+        categoryName: string;
         weight: number | null;
         assignments: AssignmentType[];
     };
-    onUpdateCategory: (field: 'name' | 'weight' | 'assignments', value: string | AssignmentType[]) => void;
+    onUpdateCategory: (field: 'categoryName' | 'weight' | 'assignments', value: string | AssignmentType[]) => void;
     onDeleteCategory: () => void;
-    onUpdateAssignment: (categoryId: number, assignmentId: number, field: 'name' | 'grade', value: string) => void;
-    onDeleteAssignment: (categoryId: number, assignmentId: number) => void;
+    onUpdateAssignment: (categoryId: string, assignmentId: string, field: 'assignmentName' | 'grade', value: string) => void;
+    onDeleteAssignment: (categoryId: string, assignmentId: string) => void;
 };
 
 export default function Category({ category, onUpdateCategory, onDeleteCategory, onUpdateAssignment, onDeleteAssignment }: CategoryProps) {
 
     const categoryNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        onUpdateCategory('name', event.target.value);
+        onUpdateCategory('categoryName', event.target.value);
     };
     const categoryWeightChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         onUpdateCategory('weight', event.target.value);
@@ -34,8 +36,8 @@ export default function Category({ category, onUpdateCategory, onDeleteCategory,
 
     const addAssignment = () => {
         const newAssignment: AssignmentType = { 
-            id: Date.now(),
-            name: '',
+            assignmentId: uuidv4(),
+            assignmentName: '',
             grade: null,
         };
         onUpdateCategory('assignments', [...category.assignments, newAssignment]);
@@ -45,13 +47,12 @@ export default function Category({ category, onUpdateCategory, onDeleteCategory,
         <div className={style.category}>
             
             <div className={style.categoryHeader}>
-
                 <input 
                     className={style.categoryName} 
                     id="categoryName"
                     type="text"
                     placeholder="Category Name"
-                    value={category.name}
+                    value={category.categoryName}
                     onChange={categoryNameChangeHandler}    
                 />
 
@@ -64,32 +65,35 @@ export default function Category({ category, onUpdateCategory, onDeleteCategory,
                     onChange={categoryWeightChangeHandler}    
                 />
 
-                
-
                 <button onClick={onDeleteCategory} className={style.deleteButton}>
                     Delete
                 </button>
-                
             </div>
 
             <hr className={style.line}/>
 
-            <div className={style.assignmentList}>
-            
+            <div className={style.assignmentList} >
                 <div>
+                    
+
+
+
                     {category.assignments.map((assignment) => (
-                    <div key={assignment.id}>
+                    <div key={assignment.assignmentId}>
                         <Assignment
                             assignment={assignment}
-                            onUpdate={(field, value) => onUpdateAssignment(category.id, assignment.id, field, value)}
-                            onDelete={() => onDeleteAssignment(category.id, assignment.id)}
+                            onUpdate={(field, value) => onUpdateAssignment(category.categoryId, assignment.assignmentId, field, value)}
+                            onDelete={() => onDeleteAssignment(category.categoryId, assignment.assignmentId)}
                         />
                     </div>
                     ))}
+                    
+
+
+                    
                 </div>
 
                 <button onClick={addAssignment}>Add Assignment</button>
-
             </div>
 
         </div>
