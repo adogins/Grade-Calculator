@@ -27,12 +27,3 @@ export async function middleware(request: any) {
     }
     return NextResponse.next();
 }
-
-/*export const config = {
-    matcher: [
-        "/api/users/",
-        "/api/users/[userId]/:path*",
-        "/Signup",
-        "/CourseView"
-    ],
-};*/
