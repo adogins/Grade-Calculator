@@ -17,22 +17,24 @@ type CoursesProps = {
 };
  
 const Courses = ({ courses, onDelete }: CoursesProps) => {
-  return (
-    <div>
-      {courses.map((course, index) => (
-        <Card
-          key={index}
-          courseName={course.courseName}
-          courseNumber={course.courseNumber}
-          professor={course.professor}
-          syllabus={course.syllabus}
-          image={course.image}
-          onDelete={onDelete}
-          finalGrade={course.finalGrade}
-        />
-      ))}
-    </div>
-  );
+  if (courses.length !== 0) {
+    return (
+      <div>
+        {courses.map((course, index) => (
+          <Card
+            key={index}
+            courseName={course.courseName}
+            courseNumber={course.courseNumber}
+            professor={course.professor}
+            syllabus={course.syllabus}
+            image={course.image}
+            onDelete={onDelete}
+            finalGrade={course.finalGrade}
+          />
+        ))}
+      </div>
+    );
+  }
 };
 
 export default Courses;

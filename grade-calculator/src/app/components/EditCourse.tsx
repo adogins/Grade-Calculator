@@ -1,74 +1,111 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import style from "./EditCourse.module.css";
 import { useRouter } from "next/navigation";
 import ExitNewCourseButton from "../components/ExitNewCourseButton";
 import Category from './Category'
 import { AssignmentType } from './Category'
 import { useSearchParams } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 
 type CategoryType = {
-    id: number;
-    name: string;
+    categoryId: string;
+    categoryName: string;
     weight: number | null;
     assignments: {
-        id: number;
-        name: string;
+        assignmentId: string;
+        assignmentName: string;
         grade: number | null;
     }[];
 };
 
+
 export default function EditCourse() {
     const searchParams = useSearchParams();
     const courseNumberToEdit = searchParams.get('courseNumber');
-
     const [categories, setCategories] = useState<CategoryType[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const router = useRouter();
     
+    const userId = '674e7e5b38cf8c6df6dfb75a';
+
+
+    useEffect(() => {
+        const fetchCourseData = async () => {
+            try {
+                const response = await fetch(`/api/users/${userId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const userData = await response.json();
+
+              
+                const courseToEdit = userData.courses.find(
+                    (course: any) => course.courseNumber === courseNumberToEdit
+                );
+
+                if (!courseToEdit) {
+                    throw new Error('Course not found');
+                }
+
+              
+                setCategories(courseToEdit.categories || []);
+
+            } catch (error) {
+                console.error('Error fetching course data:', error);
+                setErrorMessage('Failed to load course data.');
+            }
+        };
+
+        fetchCourseData();
+    }, [courseNumberToEdit]);
+
+    
+
     const addCategory = () => {
         const newCategory: CategoryType = { 
-            id: Date.now(),
-            name: '',
+            categoryId: uuidv4(),
+            categoryName: '',
             weight: null,
             assignments: [],
         };
         setCategories([...categories, newCategory]);
     };
 
-    const updateCategory = (categoryId: number, field: 'name' | 'weight' | 'assignments', value: string | AssignmentType[]) => {
+    const updateCategory = (categoryId: string, field: 'categoryName' | 'weight' | 'assignments', value: string | number | AssignmentType[]) => {
         setCategories((prevCategories) =>
             prevCategories.map((category) =>
-                category.id === categoryId ? { ...category, [field]: value } : category
+                category.categoryId === categoryId ? { ...category, [field]: Array.isArray(value) ? [...value] : value } : category
             )
         );
     };
     
-    const deleteCategory = (id: number) => {
-        setCategories(categories.filter((category) => category.id !== id));
+    const deleteCategory = (id: string) => {
+        setCategories(categories.filter((category) => category.categoryId !== id));
     };
 
-    const updateAssignment = (categoryId: number, assignmentId: number, field: 'name' | 'grade', value: string) => {
+    const updateAssignment = (categoryId: string, assignmentId: string, field: 'assignmentName' | 'grade', value: string | number) => {
         setCategories((prevCategories) =>
-            prevCategories.map((category) => category.id === categoryId ? {
+            prevCategories.map((category) => category.categoryId === categoryId ? {
                 ...category,
                 assignments: category.assignments.map((assignment) =>
-                    assignment.id === assignmentId ? { 
+                    assignment.assignmentId === assignmentId ? { 
                         ...assignment, [field]: value 
                     } : assignment),
             } : category)
         );
     };
 
-    const deleteAssignment = (categoryId: number, assignmentId: number) => {
+    const deleteAssignment = (categoryId: string, assignmentId: string) => {
         setCategories((prevCategories) =>
             prevCategories.map((category) =>
-                category.id === categoryId
-                    ? { ...category, assignments: category.assignments.filter((assignment) => assignment.id !== assignmentId) }
+                category.categoryId === categoryId
+                    ? { ...category, assignments: category.assignments.filter((assignment) => assignment.assignmentId !== assignmentId) }
                     : category
             )
         );
     };
-
+    
     function displayError(errorNumber: number): string {
         if (errorNumber === -1) {
             return "All fields must be filled out."
@@ -92,13 +129,12 @@ export default function EditCourse() {
         let totalGrade = 0;
 
         for (const category of categories) {
-            const {weight, name, assignments } = category;
-            console.log("weight:", weight," name:",name," assignments:");
+            const {weight, categoryName, assignments } = category;
             if (weight === null || 
                 weight === undefined ||
                 weight === '' || /* this is needed!!! */
-                !name || 
-                name.trim() === '') {
+                !categoryName || 
+                categoryName.trim() === '') {
                 return -1;
             }
 
@@ -107,10 +143,9 @@ export default function EditCourse() {
             }
 
             for (const assignment of category.assignments) {
-                const { name, grade } = assignment;
-                console.log("name:",name," grade:",grade);
-                if (!name || 
-                    name.trim() === '' ||
+                const { assignmentName, grade } = assignment;
+                if (!assignmentName || 
+                    assignmentName.trim() === '' ||
                     grade === null ||
                     grade === undefined ||
                     grade === '') { /* this is needed!!! */
@@ -135,40 +170,79 @@ export default function EditCourse() {
         return totalGrade;
     };
 
-    
-    
-    const submitHandler = (event: FormEvent) => {
+    const submitHandler = async (event: FormEvent) => {
         event.preventDefault();
         const grade = calculateGrade();
+    
         if (grade < 0) {
             setErrorMessage(displayError(grade));
             console.log("Error message set:", displayError(grade)); 
         } else {
             setErrorMessage(null);
-            console.log("Course Data:", categories);
-            console.log("Final Grade from EditCourse:", grade);
-           
-
-
-            const storedCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-            const updatedCourses = storedCourses.map((course: any) => {
-                if (course.courseNumber === courseNumberToEdit) {
-                    return { ...course, finalGrade: grade }; // Add/update finalGrade
-                }
-                return course;
-            });
     
-            // Save updated courses back to localStorage
-            localStorage.setItem('courses', JSON.stringify(updatedCourses));
+            try {
 
+                const userResponse = await fetch(`/api/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (!userResponse.ok) {
+                    const errorData = await userResponse.json();
+                    throw new Error(errorData.error || 'Failed to get user info (edit grade)');
+                }
+    
+                const userInfo = await userResponse.json();
+    
+                const updatedCourses = userInfo.courses.map((course: any) => {
+                    if (course.courseNumber === courseNumberToEdit) {
+                        return {
+                            ...course,
+                            categories: categories,  
+                            finalGrade: grade,       
+                        };
+                    }
+                    return course;
+                });
 
+                console.log("Payload being sent to backend:", {
+                    courses: updatedCourses,
+                });
+               
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ courses: updatedCourses }), 
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update course data');
+                }
+    
+                const data = await response.json();
+                console.log("Course data updated successfully:", data);
+    
+            } catch (error) {
+                setErrorMessage("An error occurred while updating the course.");
+                console.log(error);
+            }
+    
+          
             router.push('../CourseView');
         }
     };
+    
 
     const handleCourseViewClick = () => {
         router.push('../CourseView');
     };
+
+
 
 
     return (
@@ -189,17 +263,23 @@ export default function EditCourse() {
                     <div className={style.categoryContainer}>
                         
                         <div className={style.cats}>
+
                             {categories.map((category) => (
-                            <div key={category.id}>
+                            <div key={category.categoryId}>
                                 <Category
                                     category={category}
-                                    onUpdateCategory={(field, value) => updateCategory(category.id, field, value)}
-                                    onDeleteCategory={() => deleteCategory(category.id)}
+                                    onUpdateCategory={(field, value) => updateCategory(category.categoryId, field, value)}
+                                    onDeleteCategory={() => deleteCategory(category.categoryId)}
                                     onUpdateAssignment={updateAssignment}
                                     onDeleteAssignment={deleteAssignment}
                                 />
                             </div>
                             ))}
+                        
+
+
+
+                        
                         </div>
 
                     </div>

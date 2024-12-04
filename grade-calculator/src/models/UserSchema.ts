@@ -16,6 +16,7 @@ interface Course {
   professor: string;
   syllabus: string;
   image: string;
+  finalGrade: number; 
   categories: Category[]; // Array of categories
 }
 
@@ -52,21 +53,20 @@ const CourseSchema = new Schema<Course>({
   courseName: { type: String, required: true },
   courseNumber: { type: String, required: true },
   professor: { type: String, required: true },
-  syllabus: { type: String, requires: true },
-  image: { type: String, requires: true },
+  syllabus: { type: String, required: true },
+  image: { type: String, required: true },
+  finalGrade: { type: Number, required: true},
   categories: { type: [CategorySchema], default: [] },
 });
 
 const UserSchema = new Schema<IUser>({
   userId: { type: String, required: true },
-  name: {type: String, required: true},
-  username: { type: String, required: true, unique: true},
+  name: {type: String, required: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true},
+  password: { type: String, required: true },
   courses: { type: [CourseSchema], default: [] },
 });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 export default User;
-
-
