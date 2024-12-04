@@ -6,7 +6,7 @@ interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  courses: Course[]; // Array of classes
+  courses: Course[];
 }
 
 interface Course {
@@ -17,14 +17,14 @@ interface Course {
   syllabus: string;
   image: string;
   finalGrade: number; 
-  categories: Category[]; // Array of categories
+  categories: Category[];
 }
 
 interface Category {
   categoryId: string;
   categoryName: string;
-  weight: number; // Percentage weight of this category
-  assignments: Assignment[]; // Array of assignments
+  weight: number;
+  assignments: Assignment[];
 }
 
 interface Assignment {

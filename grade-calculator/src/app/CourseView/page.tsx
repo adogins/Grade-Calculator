@@ -44,7 +44,8 @@ export default function CourseViewPage() {
 
   const [courses, setCourses] = useState<Course[]>([]);
 
-  const userId = "674fd700d8f4381accadb6bb";
+
+  const userId = '674e7e5b38cf8c6df6dfb75a';
 
   useEffect(() => {
     const fetchCourses = async () => {
