@@ -5,29 +5,22 @@ import style from "./SignupForm.module.css";
 import { useRouter } from "next/navigation";
 import Button from "./SubmitButton";
 
-type SignupProps = {
-  onSignup: (newUser: User) => void;
-};
-
 type User = {
+  userId: string;
   name: string;
   username: string;
   email: string;
   password: string;
 };
 
-export default function SignupForm({ onSignup }: SignupProps) {
+export default function SignupForm() {
   const router = useRouter();
-
-  const handleSubmitClick = () => {
-    router.push("/");
-  };
 
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const nameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -45,28 +38,43 @@ export default function SignupForm({ onSignup }: SignupProps) {
     setPassword(event.target.value);
   };
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    // new user
-    const newUser: User = {
-      name: name,
-      username: username,
-      email: email,
-      password: password,
-    };
+    // ensure all fields are filled
+    if (!name || !username || !email || !password) {
+      setError("Pleaes fill in all fields.");
+      return;
+    }
 
-    // ensure a username and password are given
-    if (!username || !password) {
-      setError("Pleaes enter a username and a password.");
-    } else {
-      onSignup(newUser);
-      // reset form data
-      setName("");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setError("");
+    const userId = Math.floor(Math.random() * 1000).toString();
+
+    const newUser: User = { userId, name, username, email, password };
+
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setError("");
+
+        router.push("/");
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
     }
   };
 
@@ -120,10 +128,8 @@ export default function SignupForm({ onSignup }: SignupProps) {
               onChange={passwordHandler}
             />
           </div>
+          <Button type="submit">Submit</Button>
         </form>
-        <Button type="submit" onClick={handleSubmitClick}>
-          Submit
-        </Button>
       </div>
     </div>
   );
